@@ -1,0 +1,6 @@
+@LoremIpsumLogistica.Api_HostAddress = http://localhost:5165
+
+GET {{LoremIpsumLogistica.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
