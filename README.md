@@ -7,7 +7,7 @@ Esta é uma API RESTful para gerenciar [descreva brevemente o propósito da API,
 ## Pré-requisitos
 Certifique-se de ter os seguintes pré-requisitos instalados:
 
-Node.js (versão X.X.X ou superior)
+Node.js 
 npm (gerenciador de pacotes Node.js)
 Banco de Dados Microsoft SQL Server
 
@@ -16,11 +16,11 @@ Siga os passos abaixo para configurar e executar a API:
 
 1. **Clone o repositório:**
 
-```git clone https://github.com/brunodotnetdeveloper/LoremIpsumLogisticaApi.git```
+    ```git clone https://github.com/brunodotnetdeveloper/LoremIpsumLogisticaApi.git```
 
-```cd LoremIpsumLogisticaApi```
+    ```cd LoremIpsumLogisticaApi```
 
-2. **Abra a solução com o Visual Studio ou VS Code:**
+2. **Abra a solução com o Visual Studio ou VS Code**
 
 3. **Configure o appsettings.json para apontar para seu banco de dados**
 
@@ -34,4 +34,5 @@ Siga os passos abaixo para configurar e executar a API:
       "Microsoft.AspNetCore": "Warning"
     }
   }
-}```
+}
+```
