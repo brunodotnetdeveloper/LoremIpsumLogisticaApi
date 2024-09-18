@@ -31,8 +31,11 @@ Siga os passos abaixo para configurar e executar a API:
 }
 ```
 
-4. Garanta que exista um banco de dados em seu servidor chamado **LoremIpsumLogistica**.
+4. **Garanta que exista um banco de dados em seu servidor chamado LoremIpsumLogistica**.
 
-5. Abra o prompt de comando em LoremIpsumLogisticaApi/src/LoremIpsumLogistica.Api e execute:
+5. **Abra o prompt de comando em LoremIpsumLogisticaApi/src/LoremIpsumLogistica.Api e execute:**
 
     ```dotnet ef database update```
+ 
+6. Execute o projeto LoremIpsumLogistica.Api
+
