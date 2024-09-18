@@ -24,7 +24,7 @@ Siga os passos abaixo para configurar e executar a API:
 
 ```{
   "ConnectionStrings": {
-    "LoremIpsumLogisticaConnectionString": "Server=BRUNO\\INNOVACODE;Database=LoremIpsumLogistica;User Id=sa;Password=123456;TrustServerCertificate=True;"
+    "LoremIpsumLogisticaConnectionString": "Server=SEU_SERVIDOR;Database=LoremIpsumLogistica;User Id=SEU_USUARIO;Password=SUA_SENHA;TrustServerCertificate=True;"
   }
 }
 ```
