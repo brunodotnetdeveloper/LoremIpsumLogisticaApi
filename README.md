@@ -37,5 +37,5 @@ Siga os passos abaixo para configurar e executar a API:
 
     ```dotnet ef database update```
  
-6. Execute o projeto LoremIpsumLogistica.Api
+6. **Execute o projeto LoremIpsumLogistica.Api**
 
