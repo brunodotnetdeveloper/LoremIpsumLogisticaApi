@@ -9,7 +9,7 @@ namespace LoremIpsumLogistica.Core.Interfaces
         Task<T> GetById(int id);
         Task<T> Create(T entity);
         Task Update(T entity);
-        Task LogicalDeletion(T entity);
+        Task Delete(T entity);
         DbSet<T> DbSet();
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

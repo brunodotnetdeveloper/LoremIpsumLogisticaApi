@@ -18,7 +18,7 @@ namespace LoremIpsumLogistica.Infrastructure.Repositories
         // Obtém todas as entidades do tipo T.
         public virtual async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbSet.Where(x => !x.DeletedAt.HasValue && x.Active)
+            return await _dbSet.Where(x => x.Active)
                                .ToListAsync();
         }
 
@@ -51,13 +51,13 @@ namespace LoremIpsumLogistica.Infrastructure.Repositories
         }
 
         // Remove uma entidade do tipo T.
-        public virtual async Task LogicalDeletion(T entity)
+        public virtual async Task Delete(T entity)
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            entity.DeletedAt = DateTime.UtcNow;
+            _context.Entry(entity).State = EntityState.Deleted;
 
-            _context.Entry(entity).State = EntityState.Modified;
+            _dbSet.Remove(entity);
 
             await _context.SaveChangesAsync();
         }

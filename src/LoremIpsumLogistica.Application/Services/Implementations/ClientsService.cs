@@ -31,7 +31,7 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
                     throw new ArgumentException("A data de nascimento é obrigatória.");
 
                 var client = _mapper.Map<Client>(clientViewModel);
-                           
+
                 await _clientsRepository.Create(client);
 
                 return _mapper.Map<ClientViewModel>(client);
@@ -39,7 +39,7 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
             catch (Exception e)
             {
                 throw;
-            }           
+            }
         }
 
 
@@ -94,7 +94,7 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
                     foreach (var address in addressesToRemove)
                     {
                         // Lógica de remoção (pode ser exclusão lógica ou física, conforme necessário)
-                        await _addressesRepository.LogicalDeletion(address);
+                        await _addressesRepository.Delete(address);
                     }
                 }
 
@@ -118,10 +118,10 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
 
                 foreach (var address in addresses)
                 {
-                    await _addressesRepository.LogicalDeletion(address);
+                    await _addressesRepository.Delete(address);
                 }
 
-                await _clientsRepository.LogicalDeletion(client);
+                await _clientsRepository.Delete(client);
             }
         }
 
@@ -145,6 +145,24 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
             address.ClientId = clientId; // Associa o endereço ao cliente
 
             await _addressesRepository.Create(address);
+        }
+
+        public async Task DeleteAddress(int clientId, int addressId)
+        {
+            var client = await _clientsRepository.GetById(clientId);
+
+            if (client == null)
+                throw new KeyNotFoundException($"Cliente com ID {clientId} não encontrado.");
+
+            var address = await _addressesRepository.GetById(addressId);
+
+            if (address == null)
+                throw new KeyNotFoundException($"Endereço com ID {addressId} não encontrado");
+
+            if (!client.Addresses.Contains(address))
+                throw new Exception("Esse endereço não pertence ao cliente informado");
+
+            await _addressesRepository.Delete(address);
         }
     }
 }

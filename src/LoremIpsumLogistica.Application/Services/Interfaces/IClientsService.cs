@@ -1,5 +1,4 @@
 ﻿using LoremIpsumLogistica.Application.ViewModels;
-using LoremIpsumLogistica.Core.Entities;
 
 namespace LoremIpsumLogistica.Application.Services.Interfaces
 {
@@ -12,5 +11,6 @@ namespace LoremIpsumLogistica.Application.Services.Interfaces
         Task Delete(int id);
         Task<IEnumerable<AddressViewModel>> GetClientAddresses(int clientId);
         Task AddAddressToClient(int clientId, AddressViewModel address);
+        Task DeleteAddress(int clientId, int addressId);
     }
 }

@@ -24,11 +24,6 @@ namespace LoremIpsumLogistica.Core.Entities
         public DateTime? ModifiedAt { get; set; }
 
         /// <summary>
-        /// Data de exclusão da empresa (caso aplicável).
-        /// </summary>
-        public DateTime? DeletedAt { get; set; }
-
-        /// <summary>
         /// Indica se a empresa está ativa.
         /// </summary>
         public bool Active { get; set; } = true;

@@ -71,6 +71,15 @@ namespace LoremIpsumLogistica.Api.Controllers
             return NoContent();
         }
 
+
+        [HttpDelete("{clientId}/address/{addressId}")]
+        public async Task<IActionResult> DeleteAddress([FromRoute] int clientId, [FromRoute] int addressId)
+        {
+            await _clientsService.DeleteAddress(clientId, addressId);
+
+            return NoContent();
+        }
+
         [HttpGet("{id}/addresses")]
         public async Task<ActionResult<IEnumerable<AddressViewModel>>> GetClientAddresses(int id)
         {
