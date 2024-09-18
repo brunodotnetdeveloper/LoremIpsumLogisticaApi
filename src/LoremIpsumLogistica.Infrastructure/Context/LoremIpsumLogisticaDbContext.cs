@@ -4,24 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LoremIpsumLogistica.Infrastructure.Context
 {
-    /// <summary>
-    /// Contexto de banco de dados para o Omni, contendo as definições das tabelas e configurações de conexão.
-    /// </summary>
     public partial class LoremIpsumLogisticaDbContext : DbContext
     {
         private readonly IConfiguration _configuration;
 
-        /// <summary>
-        /// Construtor que recebe uma instância de IConfiguration para acessar as configurações do banco de dados.
-        /// </summary>
         public LoremIpsumLogisticaDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        /// <summary>
-        /// Construtor que recebe opções de DbContextOptions e uma instância de IConfiguration.
-        /// </summary>
         [ActivatorUtilitiesConstructor]
         public LoremIpsumLogisticaDbContext(DbContextOptions<LoremIpsumLogisticaDbContext> options, IConfiguration configuration) : base(options)
         {
@@ -72,38 +63,43 @@ namespace LoremIpsumLogistica.Infrastructure.Context
 
                 entity.Property(e => e.ClientId).HasColumnName("client_id");
 
-                entity.Property(e => e.Cep)
-                    .HasColumnName("cep")
+                entity.Property(e => e.ZipCode)
+                    .HasColumnName("zip_code") 
                     .IsRequired()
                     .HasMaxLength(9);
 
-                entity.Property(e => e.Logradouro)
-                    .HasColumnName("logradouro")
+                entity.Property(e => e.Street) 
+                    .HasColumnName("street")   
                     .IsRequired()
                     .HasMaxLength(150);
 
-                entity.Property(e => e.Numero)
-                    .HasColumnName("numero")
+                entity.Property(e => e.Number) 
+                    .HasColumnName("number")   
                     .IsRequired()
                     .HasMaxLength(10);
 
-                entity.Property(e => e.Complemento)
-                    .HasColumnName("complemento")
+                entity.Property(e => e.Complement)
+                    .HasColumnName("complement")  
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Bairro)
-                    .HasColumnName("bairro")
+                entity.Property(e => e.Neighborhood) 
+                    .HasColumnName("neighborhood")   
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Cidade)
-                    .HasColumnName("cidade")
+                entity.Property(e => e.City)
+                    .HasColumnName("city")  
                     .IsRequired()
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Uf)
-                    .HasColumnName("uf")
+                entity.Property(e => e.State)
+                    .HasColumnName("state")  
                     .IsRequired()
                     .HasMaxLength(2);
+
+                entity.Property(e => e.Type)
+                   .HasColumnName("type")
+                   .IsRequired()
+                   .HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -21,12 +21,27 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
 
         public async Task<ClientViewModel> Create(CreateClientViewModel clientViewModel)
         {
-            var client = _mapper.Map<Client>(clientViewModel);
+            try
+            {
+                // Validação do cliente
+                if (string.IsNullOrEmpty(clientViewModel.Name))
+                    throw new ArgumentException("O nome do cliente é obrigatório.");
 
-            await _clientsRepository.Create(client);
+                if (clientViewModel.BirthDate == default)
+                    throw new ArgumentException("A data de nascimento é obrigatória.");
 
-            return _mapper.Map<ClientViewModel>(client);
+                var client = _mapper.Map<Client>(clientViewModel);
+                           
+                await _clientsRepository.Create(client);
+
+                return _mapper.Map<ClientViewModel>(client);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }           
         }
+
 
         public async Task<ClientViewModel> GetById(int id)
         {
@@ -37,14 +52,61 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
 
         public async Task Update(ClientViewModel clientViewModel)
         {
+            // Busca o cliente pelo ID no banco de dados
             var client = await _clientsRepository.GetById(clientViewModel.Id);
 
-            client.Active = clientViewModel.Active;
-            client.Name = clientViewModel.Name;
-            client.BirthDate = clientViewModel.BirthDate;
+            if (client != null)
+            {
+                // Atualiza as propriedades do cliente
+                _mapper.Map(clientViewModel, client);
 
-            await _clientsRepository.Update(client);
+                // Verifica se há endereços enviados no ViewModel
+                if (clientViewModel.Addresses != null && clientViewModel.Addresses.Any())
+                {
+                    // Obter os endereços atuais do cliente no banco de dados
+                    var existingAddresses = await _addressesRepository.GetByClient(client.Id);
+
+                    // Adicionar novos endereços
+                    foreach (var addressViewModel in clientViewModel.Addresses)
+                    {
+                        // Verifica se o endereço já existe no banco de dados
+                        var existingAddress = existingAddresses.FirstOrDefault(a => a.Id == addressViewModel.Id);
+
+                        if (existingAddress == null)
+                        {
+                            // Se o endereço não existir, adicionar um novo
+                            var newAddress = _mapper.Map<Address>(addressViewModel);
+                            newAddress.ClientId = client.Id;
+                            await _addressesRepository.Create(newAddress);
+                        }
+                        else
+                        {
+                            // Se o endereço existir, atualizá-lo
+                            _mapper.Map(addressViewModel, existingAddress);
+                            await _addressesRepository.Update(existingAddress);
+                        }
+                    }
+
+                    // Remover endereços que não estão mais no ViewModel
+                    var addressIdsInViewModel = clientViewModel.Addresses.Select(a => a.Id).ToList();
+                    var addressesToRemove = existingAddresses.Where(a => !addressIdsInViewModel.Contains(a.Id)).ToList();
+
+                    foreach (var address in addressesToRemove)
+                    {
+                        // Lógica de remoção (pode ser exclusão lógica ou física, conforme necessário)
+                        await _addressesRepository.LogicalDeletion(address);
+                    }
+                }
+
+                // Atualiza o cliente no banco de dados
+                await _clientsRepository.Update(client);
+            }
+            else
+            {
+                throw new Exception("Cliente não encontrado.");
+            }
         }
+
 
         public async Task Delete(int id)
         {
@@ -65,15 +127,22 @@ namespace LoremIpsumLogistica.Application.Services.Implementations
 
         public async Task<IEnumerable<AddressViewModel>> GetClientAddresses(int clientId)
         {
-            var address = await _addressesRepository.GetByClient(clientId);
+            var addresses = await _addressesRepository.GetByClient(clientId);
 
-            return _mapper.Map<IEnumerable<AddressViewModel>>(address);
+            return _mapper.Map<IEnumerable<AddressViewModel>>(addresses);
         }
 
         public async Task AddAddressToClient(int clientId, AddressViewModel addressViewModel)
         {
+            // Verifica se o cliente existe
+            var client = await _clientsRepository.GetById(clientId);
+
+            if (client == null)
+                throw new KeyNotFoundException($"Cliente com ID {clientId} não encontrado.");
 
             var address = _mapper.Map<Address>(addressViewModel);
+
+            address.ClientId = clientId; // Associa o endereço ao cliente
 
             await _addressesRepository.Create(address);
         }

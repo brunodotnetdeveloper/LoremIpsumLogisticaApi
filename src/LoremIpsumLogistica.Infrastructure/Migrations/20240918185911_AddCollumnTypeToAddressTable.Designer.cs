@@ -4,6 +4,7 @@ using LoremIpsumLogistica.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoremIpsumLogistica.Infrastructure.Migrations
 {
     [DbContext(typeof(LoremIpsumLogisticaDbContext))]
-    partial class LoremIpsumLogisticaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918185911_AddCollumnTypeToAddressTable")]
+    partial class AddCollumnTypeToAddressTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +86,8 @@ namespace LoremIpsumLogistica.Infrastructure.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)")
                         .HasColumnName("type");
 
                     b.Property<string>("ZipCode")

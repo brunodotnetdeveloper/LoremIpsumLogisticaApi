@@ -6,41 +6,59 @@ using LoremIpsumLogistica.Core.Interfaces;
 using LoremIpsumLogistica.Infrastructure.Context;
 using LoremIpsumLogistica.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar a string de conexão do banco de dados
 builder.Services.AddDbContext<LoremIpsumLogisticaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LoremIpsumLogisticaConnectionString")));
 
-// Adicionar os repositórios e serviços
 builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
 builder.Services.AddScoped<IAddressesRepository, AddressesRepository>();
 builder.Services.AddScoped<IClientsService, ClientsService>();
 
-// Configurar o AutoMapper
 var config = new MapperConfiguration(mp => { mp.AddProfile(new MappingProfile()); });
+
 IMapper mapper = config.CreateMapper();
+
 builder.Services.AddSingleton(mapper);
 
-// Adicionar controladores
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+                .AddNewtonsoftJson(
+                  options => {
+                      options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                  });
 
-// Configurar a documentação da API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
-// Configurar o pipeline de solicitação HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
+
 app.MapControllers();
+
+app.UseCors("AllowAll");
 
 app.Run();

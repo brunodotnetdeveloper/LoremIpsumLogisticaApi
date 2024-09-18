@@ -1,4 +1,6 @@
-﻿namespace LoremIpsumLogistica.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LoremIpsumLogistica.Core.Entities
 {
     /// <summary>
     /// Classe base para todas as entidades de domínio, fornecendo uma propriedade de identificação única.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Identificador único para cada entidade de domínio.
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
