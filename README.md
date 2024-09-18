@@ -27,12 +27,12 @@ Siga os passos abaixo para configurar e executar a API:
 ```{
   "ConnectionStrings": {
     "LoremIpsumLogisticaConnectionString": "Server=BRUNO\\INNOVACODE;Database=LoremIpsumLogistica;User Id=sa;Password=123456;TrustServerCertificate=True;"
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
   }
 }
 ```
+
+4. Garanta que exista um banco de dados em seu servidor chamado **LoremIpsumLogistica**.
+
+5. Abra o prompt de comando em LoremIpsumLogisticaApi/src/LoremIpsumLogistica.Api e execute:
+
+    ```dotnet ef database update```
