@@ -1,4 +1,4 @@
-# Projeto de API dA LoremIpsumLogistica
+# Projeto de API - LoremIpsum Logistica
 
 ## Descrição
 
@@ -17,8 +17,6 @@ Siga os passos abaixo para configurar e executar a API:
 1. **Clone o repositório:**
 
     ```git clone https://github.com/brunodotnetdeveloper/LoremIpsumLogisticaApi.git```
-
-    ```cd LoremIpsumLogisticaApi```
 
 2. **Abra a solução com o Visual Studio ou VS Code**
 
