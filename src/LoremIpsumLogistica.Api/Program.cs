@@ -7,6 +7,7 @@ using LoremIpsumLogistica.Infrastructure.Context;
 using LoremIpsumLogistica.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,5 +61,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors("AllowAll");
+
+var culture = new CultureInfo("pt-BR"); // ou o culture que você deseja usar
+culture.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+culture.DateTimeFormat.DateSeparator = "/";
+CultureInfo.DefaultThreadCurrentCulture = culture;
+CultureInfo.DefaultThreadCurrentUICulture = culture;
 
 app.Run();

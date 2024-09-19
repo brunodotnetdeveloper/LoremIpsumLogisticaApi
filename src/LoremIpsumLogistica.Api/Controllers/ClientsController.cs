@@ -15,6 +15,7 @@ namespace LoremIpsumLogistica.Api.Controllers
         public async Task<ActionResult<IEnumerable<ClientViewModel>>> GetAll()
         {
             var clients = await _clientsService.GetAll();
+            
             return Ok(clients);
         }
 
@@ -22,10 +23,10 @@ namespace LoremIpsumLogistica.Api.Controllers
         public async Task<ActionResult<ClientViewModel>> GetById(int id)
         {
             var client = await _clientsService.GetById(id);
+
             if (client == null)
-            {
                 return NotFound();
-            }
+            
             return Ok(client);
         }
 
@@ -44,17 +45,15 @@ namespace LoremIpsumLogistica.Api.Controllers
         public async Task<IActionResult> Update(int id, ClientViewModel clientViewModel)
         {
             if (id != clientViewModel.Id)
-            {
                 return BadRequest("ID do cliente não bate.");
-            }
 
             var existingClient = await _clientsService.GetById(id);
+
             if (existingClient == null)
-            {
                 return NotFound();
-            }
 
             await _clientsService.Update(clientViewModel);
+
             return NoContent();
         }
 
@@ -62,12 +61,12 @@ namespace LoremIpsumLogistica.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var client = await _clientsService.GetById(id);
+
             if (client == null)
-            {
                 return NotFound();
-            }
 
             await _clientsService.Delete(id);
+
             return NoContent();
         }
 
@@ -80,22 +79,33 @@ namespace LoremIpsumLogistica.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}/addresses")]
-        public async Task<ActionResult<IEnumerable<AddressViewModel>>> GetClientAddresses(int id)
+        [HttpGet("{clientId}/addresses")]
+        public async Task<ActionResult<IEnumerable<AddressViewModel>>> GetClientAddresses(int clientId)
         {
-            var addresses = await _clientsService.GetClientAddresses(id);
+            var addresses = await _clientsService.GetClientAddresses(clientId);
+
             return Ok(addresses);
         }
 
-        [HttpPost("{id}/addresses")]
-        public async Task<ActionResult> AddAddressToClient(int id, [FromBody] AddressViewModel addressViewModel)
+        [HttpPost("{clientId}/addresses")]
+        public async Task<ActionResult> AddAddressToClient(int clientId, [FromBody] AddressViewModel addressViewModel)
         {
             if (addressViewModel == null)
-            {
                 return BadRequest("O endereço não pode ser nulo.");
-            }
 
-            await _clientsService.AddAddressToClient(id, addressViewModel);
+            await _clientsService.AddAddressToClient(clientId, addressViewModel);
+
+            return NoContent();
+        }
+
+        [HttpPut("{clientId}/address/{addressId}")]
+        public async Task<ActionResult> UpdateAddress(int clientId, int addressId, [FromBody] AddressViewModel addressViewModel)
+        {
+            if (addressViewModel == null)
+                return BadRequest("O endereço não pode ser nulo.");
+
+            await _clientsService.UpdateAddress(clientId, addressId, addressViewModel);
+
             return NoContent();
         }
     }
